@@ -25,10 +25,10 @@ export const Register = async(req, res) => {
 export const Login =  async(req, res) => {
     var response = { 
       status: 400,
-      message: '',
+      msg: '',
       body: {}
     }
-  
+    
     var email = req.body.email;
     var password = req.body.password;
     try {
@@ -53,23 +53,29 @@ export const Login =  async(req, res) => {
             id: user.id
         }
       });
-      res.co
+      
       res.cookie('refreshToken', token,{
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000
       });
       response.status = 200
-      response.message = 'Login success'
+      response.msg = 'Login success'
       response.body = token;
     } catch (error) {
       console.log('Something went wrong', error)
-      response.message = error.message
+      response.msg = error.message
     }
   
     return res.status(response.status).send(response);
   }
 
   export const Logout = async(req, res) => {
+    var response = { 
+      status: 400,
+      message: '',
+      body: {}
+    }
+  
     const refreshToken = req.cookies.refreshToken;
     if(!refreshToken) return res.sendStatus(204);
     const user = await Users.findAll({
@@ -85,5 +91,5 @@ export const Login =  async(req, res) => {
       }
     });
     res.clearCookie('refreshToken');
-    return res.sendStatus(200);
+    return res.status(201).json({msg: "Logout success"});
   }

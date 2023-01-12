@@ -13,6 +13,10 @@ export const refreshToken = async(req, res) => {
                 id: user.id
             }
           });
+          res.cookie('refreshToken', token,{
+            httpOnly: true,
+            maxAge: 24 * 60 * 60 * 1000
+          });
         res.json({ token });
     } catch (error) {
         console.log(error);

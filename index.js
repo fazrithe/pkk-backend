@@ -6,8 +6,12 @@ import db from "./config/Database.js";
 import router from "./routes/index.js";
 dotenv.config();
 const app = express();
- 
-app.use(cors({ credentials:true, origin:'http://localhost:3000' }));
+const corsOrigin = {
+    origin:'http://localhost:3000', //or whatever port your frontend is using
+    credentials:true,            
+    optionSuccessStatus:200
+}
+app.use(cors(corsOrigin));
 app.use(cookieParser());
 app.use(express.json());
 app.use(router);
