@@ -26,7 +26,7 @@ export const Login =  async(req, res) => {
     var response = { 
       status: 400,
       msg: '',
-      body: {}
+      token: '',
     }
     
     var email = req.body.email;
@@ -60,7 +60,7 @@ export const Login =  async(req, res) => {
       });
       response.status = 200
       response.msg = 'Login success'
-      response.body = token;
+      response.token = token;
     } catch (error) {
       console.log('Something went wrong', error)
       response.msg = error.message

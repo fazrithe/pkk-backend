@@ -2,6 +2,10 @@ import { DataTypes } from "sequelize";
 import db from "../config/Database.js";
 
 const Users = db.define('users', {
+    id:{
+        type: DataTypes.INTEGER,
+        primaryKey: true
+    },
     name:{
         type: DataTypes.STRING
     },
