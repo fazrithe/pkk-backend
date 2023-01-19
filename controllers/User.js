@@ -14,6 +14,26 @@ export const getUsers = async(req, res) => {
     }
 }
 
+export const getUserById = async (req, res) => {
+    const id = req.params.id;
+
+    Users.findByPk(id)
+      .then(data => {
+        if (data) {
+          res.send(data);
+        } else {
+          res.status(404).send({
+            message: `Cannot find Tutorial with id=${id}.`
+          });
+        }
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Error retrieving Tutorial with id=" + id
+        });
+    }); 
+}
+
 export const addUsers = async(req,res) => {
     const {name, username, email, password, confPassword } = req.body;
     if(password !== confPassword) return res.status(400).json({msg: "Password dan confrim password tidak cocok"});
@@ -33,13 +53,15 @@ export const addUsers = async(req,res) => {
 }
 
 export const updateUsers = async (req, res) => {
-    const cekId = await Users.findById(req.params.id);
-    if(!cekId) return res.status(404).json({message: "Data tidak ditemukan"}); 
     try {
-        const updatedUser = await Users.updateOne({_id: req.params.id}, {$set: req.body});
-        res.status(200).json(updatedUser);
+        await Users.update(req.body,{
+            where:{
+                id: req.params.id
+            }
+        });
+        res.status(200).json({msg: "User Updated"});
     } catch (error) {
-        res.status(400).json({message: error.message});
+        console.log(error.message);
     }
 }
 
